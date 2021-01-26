@@ -8,18 +8,7 @@ import {getRootState} from '../../store/selectors/user';
 
 class Auth extends React.Component {
   render() {
-    return (
-      <View style={style.wrapper}>
-        {/* TODO */}
-        {/* LOGO */}
-        {/* sing in sing up buttons */}
-        {/* registration (scroll view) or login with back button */}
-        {/* registrationForm should be with city, age, etcetera even if registration was done in google or 
-        fetch data from google */}
-        {/* form must to be how OneUI */}
-        {/* and clean form button */}
-      </View>
-    );
+    return <View style={style.wrapper}></View>;
   }
 }
 const mapStateToProps = (state) => ({

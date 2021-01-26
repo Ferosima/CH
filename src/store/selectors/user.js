@@ -1,1 +1,1 @@
-const getRootState = (state) => state.user;
+export const getRootState = (state) => state.user;
