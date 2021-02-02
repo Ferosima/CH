@@ -1,11 +1,19 @@
-import { combineReducers } from "redux";
+import {combineReducers} from 'redux';
+import {persistReducer} from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import user from "./user";
-// import conferenceReducer from "./conferences/conferencesReducer";
+import auth from './auth';
+// import user from './user';
+
+const rootPersistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  whitelist: ['auth'],
+};
 
 const rootReducer = combineReducers({
-  user,
-  // conferenceReducer: conferenceReducer,
+  auth,
+  // user,
 });
 
-export default rootReducer;
+export default persistReducer(rootPersistConfig, rootReducer);

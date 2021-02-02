@@ -4,8 +4,8 @@ import DatePicker from 'react-native-date-picker';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {mock_registration} from '../../const/mockForm';
-import {createUser} from '../../store/actions/user';
-import {getRootState} from '../../store/selectors/user';
+import {createUser} from '../../store/actions/auth';
+import {getRootState} from '../../store/selectors/auth';
 import Button from '../Button';
 import CustomInput from '../Input';
 import style from './style';
@@ -20,6 +20,8 @@ class RegistrationForm extends React.Component {
 
   componentDidMount = () => {
     // TODO remove it
+    if (this.props.auth.isLogin) {
+    }
     this.setState({
       form: {
         first_name: 'aa',
@@ -42,35 +44,12 @@ class RegistrationForm extends React.Component {
     }
   };
 
-  _validationData = () => {
-    // const errors = [];
-    // const password_length = 6;
-    const {form} = this.state;
-    // mock_registration.forEach((item) => {
-    //   if (item.required) {
-    //     if (form) {
-    //       if (!form[item.name]) {
-    //         errors.push([item.name, 'This field is required']);
-    //       } else if (item.name === 'password') {
-    //         if (form.password.length < password_length)
-    //           errors.push([item.name, `At least ${password_length} character`]);
-    //       }
-    //     } else {
-    //       errors.push([item.name, 'This field is required']);
-    //     }
-    //   }
-    // });
-    // console.log(errors, this.props.user);
-    // if (!errors.length) {
-    //   console.log('fetch');
-    this.props.createUser(form);
-    // }
-    // this.setState({error: errors});
+  _createUser = () => {
+    this.props.createUser(this.state.form);
   };
 
   _findError = (name) => {
-    // TODO change state on props (this.props.user.error)
-    const error = this.props.user.error.find((item) => item[0] === name);
+    const error = this.props.auth.error.find((item) => item[0] === name);
     return error ? error[1] : null;
   };
 
@@ -157,7 +136,6 @@ class RegistrationForm extends React.Component {
   );
 
   render() {
-    console.log(this.props.user);
     return (
       <View style={style.wrapper}>
         {this.renderModal()}
@@ -170,7 +148,7 @@ class RegistrationForm extends React.Component {
         <View style={style.buttonsWrapper}>
           <Button onPress={this._cleanForm} text={'Clear'} />
           <Button
-            onPress={this._validationData}
+            onPress={this._createUser}
             text={'Done'}
             buttonStyle={style.buttonDark}
             textStyle={style.buttonDarkText}
@@ -181,7 +159,7 @@ class RegistrationForm extends React.Component {
   }
 }
 const mapStateToProps = (state) => ({
-  user: getRootState(state),
+  auth: getRootState(state),
 });
 
 const mapDispatchToProps = {

@@ -1,9 +1,9 @@
 import {all, takeLatest} from 'redux-saga/effects';
 
-import * as user from '../actions/user';
+import * as user from '../actions/auth';
 
-// USER
-import {fetchLogin, createUser} from './user';
+// AUTH
+import {fetchLogin, createUser} from './auth';
 
 function* fetchLoginSaga() {
   yield takeLatest(user.fetchLogin, fetchLogin);

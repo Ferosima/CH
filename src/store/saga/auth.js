@@ -1,14 +1,15 @@
 import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
 import 'firebase/firestore';
 import ReduxSagaFirebase from 'redux-saga-firebase';
 import {call, put} from 'redux-saga/effects';
+import {mock_registration} from '../../const/mockForm';
 import {
   createUserFailed,
   createUserSuccess,
   fetchLoginFailed,
   fetchLoginSuccess,
-} from '../actions/user';
-import {mock_registration} from '../../const/mockForm';
+} from '../actions/auth';
 
 const firebaseApp = firebase.apps[0];
 const rsf = new ReduxSagaFirebase(firebaseApp);
@@ -48,6 +49,7 @@ export function* createUser(action) {
       yield put(createUserSuccess(user.user));
     }
   } catch (error) {
+    console.log('SIGN UP ERROR', error);
     yield errors.push(['email', error.message.split('] ')[1]]);
     yield put(createUserFailed(errors));
   }
