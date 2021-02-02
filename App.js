@@ -1,10 +1,9 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, Text} from 'react-native';
+import {SafeAreaView, StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
-import {store, persistor} from './src/store/config';
-import Navigator from './src/navigations';
-import Auth from './src/screens/AuthScreen';
+import MainLayout from './src/MainLayout';
+import {persistor, store} from './src/store/config';
 
 const App = () => {
   return (
@@ -13,7 +12,7 @@ const App = () => {
       <SafeAreaView style={{height: '100%'}}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            {store.getState().auth.isLogin ? <Navigator /> : <Auth />}
+            <MainLayout />
           </PersistGate>
         </Provider>
       </SafeAreaView>

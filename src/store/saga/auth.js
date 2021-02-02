@@ -1,6 +1,6 @@
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
-import 'firebase/firestore';
+import '@react-native-firebase/firestore';
 import ReduxSagaFirebase from 'redux-saga-firebase';
 import {call, put} from 'redux-saga/effects';
 import {mock_registration} from '../../const/mockForm';
@@ -10,12 +10,12 @@ import {
   fetchLoginFailed,
   fetchLoginSuccess,
 } from '../actions/auth';
+import {userEntry} from '../actions/user';
 
 const firebaseApp = firebase.apps[0];
 const rsf = new ReduxSagaFirebase(firebaseApp);
 
 export function* fetchLogin() {
-  console.log('hi');
   try {
     const snapshot = yield call(rsf.firestore.getCollection, 'Users');
     let users;
@@ -45,15 +45,23 @@ export function* createUser(action) {
         action.payload.email,
         action.payload.password,
       );
-      // TODO add to firebase and add to user
-      yield put(createUserSuccess(user.user));
+      yield put(createUserSuccess());
+      delete action.payload.password;
+      yield call(rsf.firestore.addDocument, 'Users', action.payload);
+      yield put(userEntry({user: action.payload, id: user.id}));
     }
   } catch (error) {
     console.log('SIGN UP ERROR', error);
-    yield errors.push(['email', error.message.split('] ')[1]]);
+    if (error.code !== 'auth/unknown') {
+      yield errors.push(['email', error.message.split('] ')[1]]);
+    } else {
+      yield errors.push(['form_error', error.message.split('] ')[1]]);
+    }
+    // TODO check internet connection and add to error new field (form_error)
     yield put(createUserFailed(errors));
   }
 }
+
 function _validationData(form) {
   const errors = [];
   const password_length = 6;

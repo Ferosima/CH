@@ -1,13 +1,17 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import style from './style';
 
 class Button extends React.Component {
   render() {
-    const {text, onPress, buttonStyle, textStyle} = this.props;
+    const {text, onPress, pending, buttonStyle, textStyle} = this.props;
     return (
       <TouchableOpacity style={[style.button, buttonStyle]} onPress={onPress}>
-        <Text style={[style.buttonText, textStyle]}>{text}</Text>
+        {pending ? (
+          <ActivityIndicator size="small" color={textStyle.color} />
+        ) : (
+          <Text style={[style.buttonText, textStyle]}>{text}</Text>
+        )}
       </TouchableOpacity>
     );
   }

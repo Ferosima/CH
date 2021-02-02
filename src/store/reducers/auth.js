@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   pending: false,
-  isLogin: false,
+  isLogin: false, // TODO remove it when userReducer will be done
   error: [],
 };
 
@@ -18,12 +18,11 @@ export default function reducer(state = initialState, action) {
     case AUTH_LOGIN:
       return {
         ...state,
-        pending: false,
+        pending: true,
       };
     case AUTH_LOGIN_SUCCESS:
       return {
         ...state,
-        isLogin: true,
         pending: false,
         error: [],
       };
@@ -36,12 +35,11 @@ export default function reducer(state = initialState, action) {
     case AUTH_SIGN_UP:
       return {
         ...state,
-        pending: false,
+        pending: true,
       };
     case AUTH_SIGN_UP_SUCCESS:
       return {
         ...state,
-        isLogin: true,
         pending: false,
         error: [],
       };
