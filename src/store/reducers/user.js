@@ -1,11 +1,18 @@
 // import {Action, ReducerClass} from 'reducer-class';
-import {USER_LOGIN, USER_LOGIN_SUCCESS, USER_LOGIN_FAILED} from '../types/user';
+import {
+  USER_LOGIN,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAILED,
+  USER_SIGN_UP,
+  USER_SIGN_UP_SUCCESS,
+  USER_SIGN_UP_FAILED,
+} from '../types/user';
 
 const initialState = {
   pending: false,
   isLogin: false,
   user: null,
-  error: null,
+  error: [],
 };
 
 export default function reducer(state = initialState, action) {
@@ -21,8 +28,29 @@ export default function reducer(state = initialState, action) {
         isLogin: true,
         pending: false,
         user: action.payload,
+        error: [],
       };
     case USER_LOGIN_FAILED:
+      return {
+        ...state,
+        pending: false,
+        error: action.payload,
+      };
+    case USER_SIGN_UP:
+      return {
+        ...state,
+        pending: false,
+      };
+    case USER_SIGN_UP_SUCCESS:
+      return {
+        ...state,
+        isLogin: true,
+        pending: false,
+        user: action.payload,
+        error: [],
+      };
+    case USER_SIGN_UP_FAILED:
+      console.log("REDUX",action.payload);
       return {
         ...state,
         pending: false,

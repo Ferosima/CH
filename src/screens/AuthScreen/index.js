@@ -1,15 +1,50 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, ScrollView, Text, Touchable} from 'react-native';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import style from './style';
 import {fetchLogin} from '../../store/actions/user';
 import {getRootState} from '../../store/selectors/user';
+import Button from '../../components/Button';
+import RegistrationForm from '../../components/RegistrationFormComponent';
+import LoginForm from '../../components/LoginFormComponent';
 
 class Auth extends React.Component {
+  state = {form: null};
+
+  _setForm = (form) => () => {
+    this.setState({form});
+  };
+
+  renderButtons = () => (
+    <View style={style.buttonsWrapper} directionalLockEnabled>
+      <Button text={'Sign in'} onPress={this._setForm('sign in')} />
+      <Button
+        text={'Register'}
+        buttonStyle={style.buttonDark}
+        textStyle={style.buttonDarkText}
+        onPress={this._setForm('register')}
+      />
+    </View>
+  );
+
+  renderForm = () => {
+    switch (this.state.form) {
+      case 'register': {
+        return <RegistrationForm goBack={this._setForm(null)} />;
+      }
+      case 'sign in': {
+        return <LoginForm />;
+      }
+    }
+  };
+
   render() {
     return (
-      <View style={style.wrapper}>
+      <ScrollView contentContainerStyle={style.wrapper}>
+        <Text style={style.title}>{`Conference\nHelper`}</Text>
+        {this.state.form ? this.renderForm() : this.renderButtons()}
         {/* TODO */}
         {/* LOGO */}
         {/* sing in sing up buttons */}
@@ -18,7 +53,7 @@ class Auth extends React.Component {
         fetch data from google */}
         {/* form must to be how OneUI */}
         {/* and clean form button */}
-      </View>
+      </ScrollView>
     );
   }
 }

@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 // import co.apptailor.googlesignin.RNGoogleSigninPackage; 
 // import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
+import com.henninghall.date_picker.DatePickerPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
           // packages.add(new ReactNativeFirebaseAppPackage());
           // packages.add( new RNGoogleSigninPackage());
+          packages.add(new DatePickerPackage());
           return packages;
         }
 
