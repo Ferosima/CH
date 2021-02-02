@@ -8,8 +8,18 @@ export default style = StyleSheet.create({
     borderRadius: 15,
     borderColor: colors.dark,
   },
-  containerStyle: {paddingHorizontal: 0},
-  label: {fontSize: 15},
-  required: {color: 'red'},
-  errorStyle: {fontSize: 12, color: 'red'},
+  containerStyle: {
+    paddingHorizontal: 0,
+  },
+  label: {
+    fontSize: 15,
+  },
+  required: {
+    color: 'red',
+  },
+  errorStyle: {
+    fontSize: 12,
+    color: 'red',
+    marginHorizontal: 0,
+  },
 });

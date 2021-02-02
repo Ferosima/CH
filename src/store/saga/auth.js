@@ -55,7 +55,11 @@ export function* createUser(action) {
     if (error.code !== 'auth/unknown') {
       yield errors.push(['email', error.message.split('] ')[1]]);
     } else {
-      yield errors.push(['form_error', error.message.split('] ')[1]]);
+      // yield errors.push(['form_error', error.message.split('] ')[1]]);
+      yield errors.push([
+        'form_error',
+        'Something went wrong:(\nCheck your internet connection',
+      ]);
     }
     // TODO check internet connection and add to error new field (form_error)
     yield put(createUserFailed(errors));

@@ -9,7 +9,6 @@ import {
 
 const initialState = {
   pending: false,
-  isLogin: false, // TODO remove it when userReducer will be done
   error: [],
 };
 

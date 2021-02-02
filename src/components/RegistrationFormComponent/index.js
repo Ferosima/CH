@@ -1,5 +1,11 @@
-import React, {Fragment} from 'react';
-import {Modal, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {
+  Modal,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -12,35 +18,21 @@ import style from './style';
 
 class RegistrationForm extends React.Component {
   state = {
-    form: {
-      birth_date: new Date(),
-    },
+    form: {},
+    date: new Date(),
     modalVisible: false,
   };
 
-  // componentDidMount = () => {
-  //   // TODO remove it
-  //   this.setState({
-  //     form: {
-  //       first_name: 'aa',
-  //       last_name: 'aa',
-  //       email: 'mail',
-  //       birth_date: new Date(),
-  //       password: 'aaaaaa',
-  //     },
-  //   });
-  // };
-
   _cleanForm = () => {
-    this.setState({form: null, date: new Date()});
+    this.setState({form: {}, date: new Date()});
   };
 
   _setForm = (name) => (value) => {
     this.setState({form: {...this.state.form, [name]: value}});
   };
 
-  _hideModal = () => {
-    this.setState({modalVisible: false});
+  _modalVisible = (value) => () => {
+    this.setState({modalVisible: value});
   };
 
   _createUser = () => {
@@ -54,28 +46,32 @@ class RegistrationForm extends React.Component {
 
   renderModal = () => (
     <Modal animationType="fade" transparent visible={this.state.modalVisible}>
-      <View style={style.modalWrapper}>
-        <View style={style.modal}>
-          <DatePicker
-            date={this.state.form.birth_date}
-            onDateChange={this._setForm('birth_date')}
-            mode="date"
-          />
-          <View style={style.buttonsWrapper}>
-            <Button
-              onPress={this._hideModal}
-              text={'Go back'}
-              buttonStyle={style.buttonBack}
+      <TouchableOpacity
+        style={style.modalWrapper}
+        onPress={this._modalVisible(false)}>
+        <TouchableWithoutFeedback>
+          <View style={style.modal}>
+            <DatePicker
+              date={this.state.date}
+              onDateChange={this._setForm('birth_date')}
+              mode="date"
             />
-            <Button
-              onPress={this._hideModal}
-              text={'Done'}
-              buttonStyle={[style.buttonDark, style.buttonBack]}
-              textStyle={style.buttonDarkText}
-            />
+            <View style={style.buttonsWrapper}>
+              <Button
+                onPress={this._modalVisible(false)}
+                text={'Go back'}
+                buttonStyle={style.buttonBack}
+              />
+              <Button
+                onPress={this._modalVisible(false)}
+                text={'Done'}
+                buttonStyle={[style.buttonDark, style.buttonBack]}
+                textStyle={style.buttonDarkText}
+              />
+            </View>
           </View>
-        </View>
-      </View>
+        </TouchableWithoutFeedback>
+      </TouchableOpacity>
     </Modal>
   );
 
@@ -86,6 +82,7 @@ class RegistrationForm extends React.Component {
       isRequired={item.required}
       value={this.state.form ? this.state.form[item.name] : null}
       error={this._findError(item.name)}
+      errorStyle={style.errorStyle}
       onChangeText={this._setForm(item.name)}
       secureTextEntry={item.name === 'password'}
     />
@@ -101,9 +98,7 @@ class RegistrationForm extends React.Component {
   renderDate = (label, text) => (
     <TouchableOpacity
       style={style.dateStyle}
-      onPress={() => {
-        this.setState({modalVisible: true});
-      }}>
+      onPress={this._modalVisible(true)}>
       <Text style={style.dateLabel}>{label}</Text>
       <View>
         <Text style={style.dateText}>{text}</Text>
@@ -112,13 +107,19 @@ class RegistrationForm extends React.Component {
   );
 
   renderBirthDate = (item) => {
+    const date = {day: ' ', month: ' ', year: ' '};
+    if (this.state.form.birth_date) {
+      date.day = this.state.form.birth_date.getDate();
+      date.month = this.state.form.birth_date.getMonth() + 1;
+      date.year = this.state.form.birth_date.getFullYear();
+    }
     return (
       <View style={style.birthDayContainer}>
         {this.renderLabel(item.label, item.required)}
         <View style={style.birthDayWrapper}>
-          {this.renderDate('Day', this.state.form.birth_date.getDate())}
-          {this.renderDate('Mouth', this.state.form.birth_date.getMonth() + 1)}
-          {this.renderDate('Year', this.state.form.birth_date.getFullYear())}
+          {this.renderDate('Day', date.day)}
+          {this.renderDate('Mouth', date.month)}
+          {this.renderDate('Year', date.year)}
         </View>
         <Text style={style.errorStyle}>{this._findError(item.name)}</Text>
       </View>
@@ -143,6 +144,7 @@ class RegistrationForm extends React.Component {
           buttonStyle={style.buttonBack}
         />
         {mock_registration.map(this.renderForm)}
+        <Text style={style.errorStyle}>{this._findError('form_error')}</Text>
         <View style={style.buttonsWrapper}>
           <Button onPress={this._cleanForm} text={'Clear'} />
           <Button

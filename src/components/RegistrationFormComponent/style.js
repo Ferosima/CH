@@ -8,7 +8,6 @@ export default style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignContent: 'center',
-    // flex: 1,
   },
   row: {
     flexDirection: 'row',
@@ -47,7 +46,9 @@ export default style = StyleSheet.create({
   },
   label: {fontSize: 15},
   required: {color: 'red'},
-  birthDayContainer: {alignSelf: 'stretch'},
+  birthDayContainer: {
+    alignSelf: 'stretch',
+  },
   birthDayWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -56,6 +57,7 @@ export default style = StyleSheet.create({
     fontSize: 12,
     color: 'red',
     marginVertical: 5,
+    alignSelf: 'stretch',
   },
   dateStyle: {
     flexDirection: 'row',

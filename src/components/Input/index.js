@@ -18,6 +18,7 @@ export default class CustomInput extends React.Component {
       isRequired,
       value,
       error,
+      errorStyle,
       keyboardType,
       secureTextEntry,
     } = this.props;
@@ -30,7 +31,7 @@ export default class CustomInput extends React.Component {
         onChangeText={onChangeText}
         value={value}
         errorMessage={error}
-        errorStyle={style.errorStyle}
+        errorStyle={[style.errorStyle, errorStyle]}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
       />
