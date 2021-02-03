@@ -63,3 +63,19 @@ export const mock_registration = [
   //   type: 'input',
   // },
 ];
+export const mock_login = [
+  {
+    keyboard: 'default',
+    label: 'Email',
+    name: 'email',
+    required: true,
+    type: 'input',
+  },
+  {
+    keyboard: 'default',
+    label: 'Password',
+    name: 'password',
+    required: true,
+    type: 'input',
+  },
+];

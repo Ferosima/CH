@@ -6,14 +6,12 @@ import {
   AUTH_SIGN_UP,
   AUTH_SIGN_UP_SUCCESS,
   AUTH_SIGN_UP_FAILED,
+  AUTH_CLEAR,
 } from '../types/auth';
 
-export const fetchLogin = createAction(AUTH_LOGIN);
+export const fetchLogin = createAction(AUTH_LOGIN, (payload) => payload);
 
-export const fetchLoginSuccess = createAction(
-  AUTH_LOGIN_SUCCESS,
-  (payload) => payload,
-);
+export const fetchLoginSuccess = createAction(AUTH_LOGIN_SUCCESS);
 export const fetchLoginFailed = createAction(
   AUTH_LOGIN_FAILED,
   (payload) => payload,
@@ -24,4 +22,6 @@ export const createUserFailed = createAction(
   AUTH_SIGN_UP_FAILED,
   (payload) => payload,
 );
+
+export const authClear = createAction(AUTH_CLEAR);
 // TODO add logout

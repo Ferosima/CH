@@ -5,6 +5,7 @@ import {
   AUTH_SIGN_UP,
   AUTH_SIGN_UP_SUCCESS,
   AUTH_SIGN_UP_FAILED,
+  AUTH_CLEAR,
 } from '../types/auth';
 
 const initialState = {
@@ -47,6 +48,10 @@ export default function reducer(state = initialState, action) {
         ...state,
         pending: false,
         error: action.payload,
+      };
+    case AUTH_CLEAR:
+      return {
+        ...initialState,
       };
     default:
       return state;

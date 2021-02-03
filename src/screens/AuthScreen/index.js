@@ -35,7 +35,7 @@ class Auth extends React.Component {
         return <RegistrationForm goBack={this._setForm(null)} />;
       }
       case 'sign in': {
-        return <LoginForm />;
+        return <LoginForm goBack={this._setForm(null)} />;
       }
     }
   };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {
   Modal,
   Text,
@@ -10,7 +10,7 @@ import DatePicker from 'react-native-date-picker';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {mock_registration} from '../../const/mockForm';
-import {createUser} from '../../store/actions/auth';
+import {createUser, authClear} from '../../store/actions/auth';
 import {getRootState} from '../../store/selectors/auth';
 import Button from '../Button';
 import CustomInput from '../Input';
@@ -42,6 +42,11 @@ class RegistrationForm extends React.Component {
   _findError = (name) => {
     const error = this.props.auth.error.find((item) => item[0] === name);
     return error ? error[1] : null;
+  };
+
+  _goBack = () => {
+    this.props.goBack();
+    this.props.authClear();
   };
 
   renderModal = () => (
@@ -139,7 +144,7 @@ class RegistrationForm extends React.Component {
       <View style={style.wrapper}>
         {this.renderModal()}
         <Button
-          onPress={this.props.goBack}
+          onPress={this._goBack}
           text={'Go back'}
           buttonStyle={style.buttonBack}
         />
@@ -165,6 +170,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   createUser,
+  authClear,
 };
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

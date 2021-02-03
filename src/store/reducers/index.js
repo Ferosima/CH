@@ -8,7 +8,7 @@ import user from './user';
 const rootPersistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['user', 'auth'],
+  blacklist: ['auth'],
 };
 
 const rootReducer = combineReducers({
