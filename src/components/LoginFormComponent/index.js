@@ -6,7 +6,7 @@ import {mock_login} from '../../const/mockForm';
 import {fetchLogin, authClear} from '../../store/actions/auth';
 import {getRootState} from '../../store/selectors/auth';
 import Button from '../Button';
-import CustomInput from '../Input';
+import Input from '../Input';
 import style from './style';
 
 class RegistrationForm extends React.Component {
@@ -14,8 +14,9 @@ class RegistrationForm extends React.Component {
     form: {},
   };
 
-  _cleanForm = () => {
-    this.setState({form: {}});
+  _goToRegister = () => {
+    this.props.changeComponent();
+    this.props.authClear();
   };
 
   _setForm = (name) => (value) => {
@@ -31,13 +32,8 @@ class RegistrationForm extends React.Component {
     return error ? error[1] : null;
   };
 
-  _goBack = () => {
-    this.props.goBack();
-    this.props.authClear();
-  };
-
   renderInput = (item, index) => (
-    <CustomInput
+    <Input
       key={index}
       label={item.label}
       keyboardType={item.keyboard}
@@ -53,18 +49,13 @@ class RegistrationForm extends React.Component {
   render() {
     return (
       <View style={style.wrapper}>
-        <Button
-          onPress={this._goBack}
-          text={'Go back'}
-          buttonStyle={style.buttonBack}
-        />
         {mock_login.map(this.renderInput)}
         <Text style={style.errorStyle}>{this._findError('form_error')}</Text>
         <View style={style.buttonsWrapper}>
-          <Button onPress={this._cleanForm} text={'Clear'} />
+          <Button onPress={this._goToRegister} text={'Register'} />
           <Button
             onPress={this._fetchLogin}
-            text={'Done'}
+            text={'Login'}
             pending={this.props.auth.pending}
             buttonStyle={style.buttonDark}
             textStyle={style.buttonDarkText}

@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import auth from './auth';
 import user from './user';
+import events from './events';
 
 const rootPersistConfig = {
   key: 'root',
@@ -14,6 +15,7 @@ const rootPersistConfig = {
 const rootReducer = combineReducers({
   auth,
   user,
+  events,
 });
 
 export default persistReducer(rootPersistConfig, rootReducer);

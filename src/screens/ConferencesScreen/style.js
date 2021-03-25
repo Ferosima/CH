@@ -1,26 +1,32 @@
 import {StyleSheet} from 'react-native';
+import {color} from 'react-native-reanimated';
 import {colors} from '../../const/colors';
 
 export default style = StyleSheet.create({
   wrapper: {
-    flexGrow: 1,
-    backgroundColor: colors.main,
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  titleWrapper: {
+    justifyContent: 'center',
+  },
+  headerWrapper: {
+    width: '100%',
+    backgroundColor: 'white',
   },
   title: {
-    fontSize: 40,
+    fontFamily: 'Nunito-Light',
+    fontSize: 35,
     justifyContent: 'flex-start',
+    color: colors.main,
   },
-  buttonsWrapper: {
-    flexDirection: 'row',
-    alignContent: 'center',
-    justifyContent: 'space-around',
+  wrapperContentStyle: {
+    alignItems: 'center',
+    width: '100%',
+    padding: 10,
+    flexGrow: 1,
   },
-  buttonDark: {
-    backgroundColor: '#0245a3',
-  },
-  buttonDarkText: {
-    color: 'white',
+  eventStyle: {
+    width: '100%',
   },
 });

@@ -11,31 +11,19 @@ import RegistrationForm from '../../components/RegistrationFormComponent';
 import LoginForm from '../../components/LoginFormComponent';
 
 class Auth extends React.Component {
-  state = {form: null};
+  state = {form: 'sign in'};
 
   _setForm = (form) => () => {
     this.setState({form});
   };
 
-  renderButtons = () => (
-    <View style={style.buttonsWrapper} directionalLockEnabled>
-      <Button text={'Sign in'} onPress={this._setForm('sign in')} />
-      <Button
-        text={'Register'}
-        buttonStyle={style.buttonDark}
-        textStyle={style.buttonDarkText}
-        onPress={this._setForm('register')}
-      />
-    </View>
-  );
-
   renderForm = () => {
     switch (this.state.form) {
       case 'register': {
-        return <RegistrationForm goBack={this._setForm(null)} />;
+        return <RegistrationForm goBack={this._setForm('sign in')} />;
       }
       case 'sign in': {
-        return <LoginForm goBack={this._setForm(null)} />;
+        return <LoginForm changeComponent={this._setForm('register')} />;
       }
     }
   };
@@ -43,8 +31,11 @@ class Auth extends React.Component {
   render() {
     return (
       <ScrollView contentContainerStyle={style.wrapper}>
-        <Text style={style.title}>{`Conference\nHelper`}</Text>
-        {this.state.form ? this.renderForm() : this.renderButtons()}
+        <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+          <Text style={style.title}>{`Your\nEvent`}</Text>
+          <Text style={[style.title, {color: 'orange'}]}>S</Text>
+        </View>
+        {this.renderForm()}
         {/* TODO */}
         {/* LOGO */}
         {/* sing in sing up buttons */}

@@ -65,6 +65,7 @@ module.exports = {
     'import/no-commonjs': 0,
     'no-empty': 1,
     'comma-dangle': 0,
+    'react/display-name': 0,
     eqeqeq: 1,
     camelcase: 0,
   },

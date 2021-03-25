@@ -13,6 +13,7 @@ export default style = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonText: {
+    fontFamily: 'Nunito-Light',
     fontSize: 20,
   },
 });

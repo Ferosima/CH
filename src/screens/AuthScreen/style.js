@@ -9,8 +9,11 @@ export default style = StyleSheet.create({
     justifyContent: 'space-around',
   },
   title: {
-    fontSize: 40,
+    fontFamily: 'Nunito-Bold',
+    // fontWeight: 'bold',
+    fontSize: 45,
     justifyContent: 'flex-start',
+    color: colors.dark,
   },
   buttonsWrapper: {
     flexDirection: 'row',
