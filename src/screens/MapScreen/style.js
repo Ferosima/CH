@@ -28,7 +28,7 @@ export default style = StyleSheet.create({
     color: colors.main,
   },
   wrapperContentStyle: {
-    // alignItems: 'center',
+    alignItems: 'center',
     width: '100%',
   },
   eventStyle: {
@@ -36,7 +36,7 @@ export default style = StyleSheet.create({
   },
   headerWrapper: {
     // height: Dimensions.get('window').height * 0.27,
-    // height: '30%',
+    height: '30%',
     width: '100%',
     backgroundColor: '#3449C0',
     borderBottomLeftRadius: (Dimensions.get('window').height * 0.2) / 3,
@@ -47,7 +47,6 @@ export default style = StyleSheet.create({
   },
   headerTextContainer: {
     marginHorizontal: 20,
-    paddingBottom: 20,
   },
   headerSubtitle: {
     fontFamily: 'Nunito-Light',
@@ -84,9 +83,36 @@ export default style = StyleSheet.create({
     fontFamily: 'Nunito-SemiBold',
     color: 'white',
   },
+  stickyHeaderWrapper: {
+    width: '100%',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    backgroundColor: '#F2F6FF',
+  },
+  stickyHeaderText: {
+    flex: 1,
+    fontSize: 20,
+    fontFamily: 'Nunito-SemiBold',
+    color: colors.blueDark,
+  },
+  stickyHeaderIcon: {
+    paddingHorizontal: 5,
+  },
   itemListWrapper: {
-    zIndex: 1,
-    marginBottom: 20,
-    marginHorizontal: 10,
+    // borderWidth:1
+    height:300,width:300
+    // marginBottom: 10,
+    // marginHorizontal: 20,
+  },
+  listStyle: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    zIndex: 2,
+  },
+  listContainerStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -9,7 +9,7 @@ import {colors} from './src/const/colors';
 const App = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} hidden/>
       <SafeAreaView style={{height: '100%'}}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>

@@ -4,6 +4,7 @@ import {Icon} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import MapView, {Marker, Callout} from 'react-native-maps';
 import {EventItem} from '../../components/EventItem';
 import {colors} from '../../const/colors';
 import {fetchEvents} from '../../store/actions/events';
@@ -12,7 +13,7 @@ import style from './style';
 import {ItemInfo} from '../../components/ItemInfo';
 import {FilterSeachBar} from '../../components/FilterSearchBar';
 
-class Conferences extends React.Component {
+class MapScreen extends React.Component {
   state = {
     search: null,
     filter: null,
@@ -38,35 +39,20 @@ class Conferences extends React.Component {
     this.setState({indexItem: null});
   };
 
-  renderHeader = () => (
-    <>
-      <View style={style.headerWrapper}>
-        <View style={{paddingVertical: 20}}></View>
-        <View style={style.headerTextContainer}>
-          <Text style={style.headerSubtitle}>Hello,Name</Text>
-          <Text style={style.headerTitle}>Find Events for Yourself</Text>
-        </View>
-        <View style={style.countEventsWrapper}>
-          <Text style={style.countEventsText}>
-            You have 3 events in this week
-          </Text>
-          <TouchableOpacity style={style.countEventsButton}>
-            <Text style={style.countEventsButtonText}>Go to calendar</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </>
-  );
-
   renderItemEvent = (item, index) => (
-    <View style={style.itemListWrapper} key={index}>
-      <EventItem data={item} onPress={this.onPressItem(index)} />
+    // <View style={style.itemListWrapper} key={index}>
+    <View
+      style={{width: 350, height: 200, backgroundColor: 'blue', borderWidth: 1}}
+      key={index}>
+      {/* <EventItem data={item} onPress={this.onPressItem(index)} /> */}
     </View>
   );
 
   renderEventList = () => {
     const {events} = this.props;
-    return events.list.map(this.renderItemEvent);
+    return (
+      <View style={style.row}>{events.list.map(this.renderItemEvent)}</View>
+    );
   };
 
   render() {
@@ -79,14 +65,38 @@ class Conferences extends React.Component {
             onPressBlur={this.onPressBlur}
           />
         </Modal>
-        <ScrollView
-          style={style.wrapper}
-          contentContainerStyle={style.wrapperContentStyle}
-          stickyHeaderIndices={[1]}>
-          {this.renderHeader()}
-          <FilterSeachBar />
-          {this.renderEventList()}
-        </ScrollView>
+        <View style={{flex: 1, width: '100%'}}>
+          <View
+            style={{
+              paddingHorizontal: 10,
+              paddingTop: 10,
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              position: 'absolute',
+              justifyContent: 'space-between',
+              zIndex: 1,
+            }}>
+            <FilterSeachBar
+              contentContainer={{
+                borderRadius: 30,
+                backgroundColor: '#ffffff99',
+              }}
+            />
+          </View>
+          <View style={{position: 'absolute', bottom: 10,zIndex:1}}>
+            <ScrollView horizontal>{this.renderEventList()}</ScrollView>
+          </View>
+          <MapView
+            style={{
+              flex: 1,
+              width: '100%',
+              zIndex: 0,
+              justifyContent: 'flex-end',
+            }}></MapView>
+          <View style={{flex: 1, position: 'absolute'}}></View>
+        </View>
       </>
     );
   }
@@ -100,4 +110,4 @@ const mapDispatchToProps = {
 };
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect)(Conferences);
+export default compose(withConnect)(MapScreen);

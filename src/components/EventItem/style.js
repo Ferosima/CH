@@ -3,66 +3,91 @@ import {colors} from '../../const/colors';
 
 export default style = StyleSheet.create({
   wrapper: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.23,
+    // shadowRadius: 2.62,
+    elevation: 1.5,
     backgroundColor: 'white',
     width: '100%',
     flexDirection: 'row',
-    borderRadius: 20,
-    marginVertical: 5,
+    borderRadius: 10,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
-  imageWrapper: {
-    padding: 5,
-    width: '35%',
-  },
-  dateWrapper: {
-    paddingVertical: 5,
-  },
-  infoWrapper: {
+  flex: {
     flex: 1,
   },
   textWrapper: {
-    paddingHorizontal: 15,
-    paddingVertical: 7,
     flex: 1,
-    // width: '55%',
-    // justifyContent: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+  },
+  imageWrapper: {
+    paddingVertical: 5,
+    paddingLeft: 5,
+    width: '30%',
+    aspectRatio: 102 / 105,
   },
   image: {
     width: '100%',
     height: '100%',
-    flex: 1,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   title: {
-    fontFamily: 'Nunito-Regular',
-    fontSize: 17,
-    color: '#2267C8',
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 16,
+    color: colors.blueDark,
   },
-  date: {
+  subtitle: {
     fontFamily: 'Nunito-Regular',
     fontSize: 13,
+    color: colors.grey,
+  },
+  iconContainer: {
+    backgroundColor: colors.blueLight,
+    aspectRatio: 1,
+    borderRadius: 50,
+  },
+  container: {
+    paddingHorizontal: 3,
+    borderRadius: 100,
+  },
+  timeContainer: {
+    // backgroundColor: colors.greenLight,
   },
   time: {
-    fontFamily: 'Comfortaa-Regular',
-    includeFontPadding: false,
-    fontSize: 25,
-    color: '#2267C8',
+    color: '#27B647',
   },
-  year: {
-    color: '#87AEE3',
-    fontSize: 12,
-    fontFamily: 'Nunito-Regular',
-    paddingHorizontal: 5,
+  modalBlurWrapper: {
+    flex: 1,
+    backgroundColor: '#C0C0C030',
+  },
+  modalWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff00',
+  },
+  modalItemWrapper: {
+    width: '90%',
+    height: '90%',
+    borderRadius: 20,
+    backgroundColor: 'white',
+    // elevation: 3,
+  },
+  modalImageContainer: {
+    // padding: 5,
+    width: '100%',
+    aspectRatio: 7 / 6,
+    borderRadius: 50,
   },
 });

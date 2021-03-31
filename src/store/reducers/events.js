@@ -6,7 +6,7 @@ import {
 } from '../types/events';
 
 const initialState = {
-  list: null,
+  list: [],
   event: null,
   pending: false,
   error: null,

@@ -10,6 +10,8 @@ target 'CH_alpha' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'react-native-blur', :path => '../node_modules/@react-native-community/blur'
+
   target 'CH_alphaTests' do
     inherit! :complete
     # Pods for testing

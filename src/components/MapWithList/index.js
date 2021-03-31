@@ -42,12 +42,11 @@ export class MapWithList extends React.Component {
           // scrollEnabled={false}
           showsUserLocation
           style={style.mapView}>
-          style={{flexGrow: 1, width: '100%'}}>
           {this.renderMarker()}
         </MapView>
         <FlatList
           // style={style.listStyle}
-          // contentContainerStyle={style.listContainerStyle}
+          contentContainerStyle={style.listContainerStyle}
           data={data}
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}

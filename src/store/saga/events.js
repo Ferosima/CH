@@ -12,19 +12,62 @@ export function* fetchEvents() {
   try {
     yield put(
       fetchEventsSuccess([
-        {title: 'Lorem ipsum dolor1 adadadasdadsd'},
-        {title: 'Lorem ipsum dolor2'},
-        {title: 'Lorem ipsum dolor3'},
-        {title: 'Lorem ipsum dolor5'},
-        {title: 'Lorem ipsum dolor6'},
-        {title: 'Lorem ipsum dolor7'},
-        // {title: 'Lorem ipsum dolor1234'},
-        // {title: 'Lorem ipsum dolor1234'},
-        // {title: 'Lorem ipsum dolor1234'},
-        // {title: 'Lorem ipsum dolor1234'},
-        // {title: 'Lorem ipsum dolor1234'},
-        // {title: 'Lorem ipsum dolor1234'},
-        // {title: 'Lorem ipsum dolor1234'},
+        {
+          title: 'Lorem ipsum dolor',
+          date: '27.03.2021',
+          time: '13:00-14:00',
+          map: 'University Street, 27, Kherson',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
+        },
+        {
+          title: 'Lorem ipsum dolor',
+          date: '27.03.2021',
+          time: '13:00-14:00',
+          map: 'University Street, 27, Kherson',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
+        },
+        {
+          title: 'Lorem ipsum dolor',
+          date: '27.03.2021',
+          time: '13:00-14:00',
+          map: 'University Street, 27, Kherson',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
+        },
+        {
+          title: 'Lorem ipsum dolor',
+          date: '27.03.2021',
+          time: '13:00-14:00',
+          map: 'University Street, 27, Kherson',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
+        },
+        {
+          title: 'Lorem ipsum dolor',
+          date: '27.03.2021',
+          time: '13:00-14:00',
+          map: 'University Street, 27, Kherson',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
+        },
+        {
+          title: 'Lorem ipsum dolor',
+          date: '27.03.2021',
+          time: '13:00-14:00',
+          map: 'University Street, 27, Kherson',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
+        },
+        {
+          title: 'Lorem ipsum dolor',
+          date: '27.03.2021',
+          time: '13:00-14:00',
+          map: 'University Street, 27, Kherson',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
+        },
       ]),
     );
   } catch (error) {
