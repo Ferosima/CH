@@ -12,25 +12,75 @@ import {
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {BlurView} from '@react-native-community/blur';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import Toast from 'react-native-toast-message';
 import defualt_image from '../../../assets/images/def_img.jpg';
 import style from './style';
 import {colors} from '../../const/colors';
+import {geocoder} from '../../const/functions/geopoint';
+import {dateToDay, dateToTime} from '../../const/functions/time';
+import {EventButton} from '../EventButton';
+import {
+  fetchIntersectingEvents,
+  addEventToCalendar,
+  deleteEventFromCalendar,
+} from '../../store/actions/calendar';
+import {getCalendarState} from '../../store/selectors/calendar';
 
-export class ItemInfo extends React.Component {
+class ItemInfo extends React.Component {
+  state = {mapAddress: 'loading', state: 'success'};
+
+  async componentDidMount() {
+    try {
+      const {time_begin, time_end} = this.props.data;
+      this.props.fetchIntersectingEvents({time_begin, time_end});
+      const mapAddress = await geocoder(this.props.data.map);
+      this.setState({mapAddress});
+      // fetch calendar item
+    } catch (err) {
+      // handle errorsa
+    }
+  }
+
+  renderButton = () => {
+    const {intersectingEvents} = this.props.calendarState;
+    const {id, label, map, time_begin, time_end} = this.props.data;
+    const isThisEvent = intersectingEvents.findIndex(
+      (el) => el.id_event === id,
+    );
+    const state =
+      isThisEvent != -1
+        ? 'danger'
+        : intersectingEvents.length
+        ? 'disabled'
+        : 'success';
+    return (
+      <EventButton
+        state={state}
+        pending={this.props.calendarState.pending}
+        countOfEvents={intersectingEvents.length}
+        onPressSuccess={() =>
+          this.props.addEventToCalendar({time_begin, time_end, id, label, map})
+        }
+        onPressDisabled={() => console.log('dis')}
+        onPressDanger={() =>
+          this.props.deleteEventFromCalendar(intersectingEvents[0].id)
+        }
+      />
+    );
+  };
+
   render() {
     const {data, onPressBlur} = this.props;
-    const {title, map, date, time, description, image} = data;
-    console.log(this.state);
+    const {id, label, time_begin, time_end, description, image} = data;
     return (
       <TouchableOpacity
         style={{flex: 1}}
         activeOpacity={1}
         onPress={onPressBlur}>
         <BlurView style={style.blurWrapper} blurType="light" blurAmount={1}>
-          <View
-            style={style.wrapper}
-            //  onPress={onPressBlur}
-          >
+          <View style={style.wrapper}>
             <TouchableWithoutFeedback>
               <View style={style.itemContainer}>
                 <ScrollView>
@@ -44,13 +94,13 @@ export class ItemInfo extends React.Component {
                   <View style={style.contentContainer}>
                     <View style={{marginBottom: 20}}>
                       <Text numberOfLines={2} style={style.title}>
-                        {title}
+                        {label}
                       </Text>
                       <View style={style.row}>
                         <Text
                           style={[style.text, style.mapText]}
                           numberOfLines={1}>
-                          {map}
+                          {this.state.mapAddress}
                         </Text>
                         <TouchableOpacity
                           activeOpacity={0.5}
@@ -72,7 +122,7 @@ export class ItemInfo extends React.Component {
                       <TextIcon
                         label="Date"
                         labelStyle={style.subtitle}
-                        text={date}
+                        text={dateToDay(time_begin)}
                         textStyle={style.dateText}
                         iconName="calendar"
                         iconType="feather"
@@ -83,7 +133,9 @@ export class ItemInfo extends React.Component {
                       <TextIcon
                         label="Time"
                         labelStyle={style.subtitle}
-                        text={time}
+                        text={`${dateToTime(time_begin)}-${dateToTime(
+                          time_end,
+                        )}`}
                         textStyle={[style.dateText, style.greenText]}
                         iconName="clock"
                         iconType="feather"
@@ -95,12 +147,7 @@ export class ItemInfo extends React.Component {
                       <Text style={style.subtitle}>About</Text>
                       <Text style={style.text}>{description}</Text>
                     </View>
-                    <TouchableOpacity
-                      activeOpacity={0.5}
-                      style={style.buttonContainer}
-                      onPress={() => console.log('Go to event press')}>
-                      <Text style={style.buttonText}>Go to event</Text>
-                    </TouchableOpacity>
+                    {this.renderButton()}
                   </View>
                 </ScrollView>
               </View>
@@ -142,3 +189,15 @@ class TextIcon extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  calendarState: getCalendarState(state),
+});
+
+const mapDispatchToProps = {
+  fetchIntersectingEvents,
+  addEventToCalendar,
+  deleteEventFromCalendar,
+};
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withConnect)(ItemInfo);

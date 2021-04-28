@@ -1,16 +1,25 @@
 import React from 'react';
-import {FlatList, Text, TouchableOpacity, View, Modal} from 'react-native';
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  Modal,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import MapView, {Marker, Callout} from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
 import {EventItem} from '../../components/EventItem';
 import {colors} from '../../const/colors';
 import {fetchEvents} from '../../store/actions/events';
-import {getRootState} from '../../store/selectors/events';
+import {getEventsState} from '../../store/selectors/events';
 import style from './style';
-import {ItemInfo} from '../../components/ItemInfo';
+import ItemInfo from '../../components/ItemInfo';
 import {FilterSeachBar} from '../../components/FilterSearchBar';
 
 class MapScreen extends React.Component {
@@ -19,11 +28,48 @@ class MapScreen extends React.Component {
     filter: null,
     modalVisible: false,
     indexItem: null,
+    location: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+    },
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.fetchEvents();
+    this.requestPermissions();
+    this.findCoordinates();
   }
+
+  findCoordinates = () => {
+    console.log('find Call');
+    Geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({location: position.coords});
+      },
+      (error) => {
+        // See error code charts below.
+        console.log('ERROR', error.code, error.message);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 3600000},
+    );
+  };
+
+  requestPermissions = async () => {
+    if (Platform.OS === 'ios') {
+      Geolocation.requestAuthorization();
+      Geolocation.setRNConfiguration({
+        skipPermissionRequests: false,
+        authorizationLevel: 'whenInUse',
+      });
+      await this.findCoordinates();
+    }
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      );
+      await this.findCoordinates();
+    }
+  };
 
   setModalVisible = (visible) => {
     this.setState({modalVisible: visible});
@@ -41,10 +87,12 @@ class MapScreen extends React.Component {
 
   renderItemEvent = (item, index) => (
     // <View style={style.itemListWrapper} key={index}>
-    <View
-      style={{width: 350, height: 200, backgroundColor: 'blue', borderWidth: 1}}
-      key={index}>
-      {/* <EventItem data={item} onPress={this.onPressItem(index)} /> */}
+    <View style={{width: 300, paddingHorizontal: 10}} key={index}>
+      <EventItem
+        data={item}
+        onPress={this.onPressItem(index)}
+        imageStyle={{width: '40%', aspectRatio: 20 / 25}}
+      />
     </View>
   );
 
@@ -55,8 +103,24 @@ class MapScreen extends React.Component {
     );
   };
 
+  renderMarker = (item, index) => {
+    const {_latitude, _longitude} = item.map;
+    return (
+      <Marker
+        key={index}
+        coordinate={{latitude: _latitude, longitude: _longitude}}
+        title={item.label}
+        description={item.description}
+        onCalloutPress={this.onPressItem(index)}
+        showCallout
+      />
+    );
+  };
+
   render() {
-    const {modalVisible} = this.state;
+    const {events} = this.props;
+    const {modalVisible, location} = this.state;
+    console.log('LOC', location);
     return (
       <>
         <Modal animationType="fade" transparent visible={modalVisible}>
@@ -70,10 +134,7 @@ class MapScreen extends React.Component {
             style={{
               paddingHorizontal: 10,
               paddingTop: 10,
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
+              width: '100%',
               position: 'absolute',
               justifyContent: 'space-between',
               zIndex: 1,
@@ -85,8 +146,10 @@ class MapScreen extends React.Component {
               }}
             />
           </View>
-          <View style={{position: 'absolute', bottom: 10,zIndex:1}}>
-            <ScrollView horizontal>{this.renderEventList()}</ScrollView>
+          <View style={{position: 'absolute', bottom: 10, zIndex: 1}}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {this.renderEventList()}
+            </ScrollView>
           </View>
           <MapView
             style={{
@@ -94,7 +157,19 @@ class MapScreen extends React.Component {
               width: '100%',
               zIndex: 0,
               justifyContent: 'flex-end',
-            }}></MapView>
+            }}
+            region={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.05,
+            }}
+            showsUserLocation
+            loadingEnabled
+            followsUserLocation>
+            {events.list.map(this.renderMarker)}
+          </MapView>
+
           <View style={{flex: 1, position: 'absolute'}}></View>
         </View>
       </>
@@ -102,7 +177,7 @@ class MapScreen extends React.Component {
   }
 }
 const mapStateToProps = (state) => ({
-  events: getRootState(state),
+  events: getEventsState(state),
 });
 
 const mapDispatchToProps = {

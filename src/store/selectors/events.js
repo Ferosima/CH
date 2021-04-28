@@ -1,1 +1,1 @@
-export const getRootState = (state) => state.events;
+export const getEventsState = (state) => state.events;

@@ -4,7 +4,7 @@ import {colors} from '../../const/colors';
 export default style = StyleSheet.create({
   wrapper: {
     flexGrow: 1,
-    backgroundColor: colors.main,
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'space-around',
   },

@@ -32,7 +32,7 @@ export default class CustomDatePicker extends React.Component {
       }),
       backgroundColor: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: ['#f2fcfc', '#f2fcfc'],
+        outputRange: ['white', 'white'],
       }),
       zIndex: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],

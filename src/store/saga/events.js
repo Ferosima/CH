@@ -10,68 +10,18 @@ const rsf = new ReduxSagaFirebase(firebaseApp);
 
 export function* fetchEvents() {
   try {
-    yield put(
-      fetchEventsSuccess([
-        {
-          title: 'Lorem ipsum dolor',
-          date: '27.03.2021',
-          time: '13:00-14:00',
-          map: 'University Street, 27, Kherson',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
-        },
-        {
-          title: 'Lorem ipsum dolor',
-          date: '27.03.2021',
-          time: '13:00-14:00',
-          map: 'University Street, 27, Kherson',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
-        },
-        {
-          title: 'Lorem ipsum dolor',
-          date: '27.03.2021',
-          time: '13:00-14:00',
-          map: 'University Street, 27, Kherson',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
-        },
-        {
-          title: 'Lorem ipsum dolor',
-          date: '27.03.2021',
-          time: '13:00-14:00',
-          map: 'University Street, 27, Kherson',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
-        },
-        {
-          title: 'Lorem ipsum dolor',
-          date: '27.03.2021',
-          time: '13:00-14:00',
-          map: 'University Street, 27, Kherson',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
-        },
-        {
-          title: 'Lorem ipsum dolor',
-          date: '27.03.2021',
-          time: '13:00-14:00',
-          map: 'University Street, 27, Kherson',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
-        },
-        {
-          title: 'Lorem ipsum dolor',
-          date: '27.03.2021',
-          time: '13:00-14:00',
-          map: 'University Street, 27, Kherson',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce viverra purus at eros iaculis, sit amet interdum nulla porta. Curabitur dapibus nibh tempus, pretium magna et, eleifend elit...',
-        },
-      ]),
+    const data = [];
+    const snapshot = yield call(
+      rsf.firestore.getCollection,
+      firestore().collection('Events'),
     );
+
+    snapshot.forEach((querySnapshot) => {
+      data.push(Object.assign(querySnapshot.data(), {id: querySnapshot.id}));
+    });
+    yield put(fetchEventsSuccess(data));
   } catch (error) {
     console.log('FETCH EVENTS', error);
-    yield put(fetchEventsFailed(errors));
+    yield put(fetchEventsFailed(error));
   }
 }

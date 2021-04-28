@@ -93,17 +93,4 @@ export default style = StyleSheet.create({
   marginBottom: {
     marginBottom: 25,
   },
-  buttonContainer: {
-    width: '100%',
-    backgroundColor: '#27B647',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-    paddingVertical: 10,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontFamily: 'Comfortaa',
-    color: 'white',
-  },
 });

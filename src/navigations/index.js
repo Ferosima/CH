@@ -7,6 +7,7 @@ import Conferences from '../screens/ConferencesScreen';
 import {colors} from '../const/colors';
 import {navigation_icons} from '../const/icons';
 import MapScreen from '../screens/MapScreen';
+import CalendarScreen from '../screens/CalendarScreen';
 
 const Tab = createBottomTabNavigator();
 class TabBarButton extends React.Component {
@@ -45,16 +46,18 @@ export default function MyTabs() {
         tabBarOptions={{
           style: {
             justifyContent: 'center',
-            height: 60,
+            alignItems: 'baseline',
+            height: 55,
             borderTopWidth: 0,
             backgroundColor: '#ffffff',
             elevation: 0,
           },
           tabStyle: {
             justifyContent: 'center',
-            fontSize: 16,
+            fontSize: 14,
+            fontFamily: 'Nunito-Regular',
           },
-          labelStyle: {fontSize: 14},
+          labelStyle: {fontSize: 14, fontFamily: 'Nunito-Regular'},
           activeTintColor: colors.blueDark,
           inactiveTintColor: colors.grey,
         }}>
@@ -68,6 +71,13 @@ export default function MyTabs() {
         <Tab.Screen
           name="Map"
           component={MapScreen}
+          options={{
+            tabBarButton: (props) => <TabBarButton data={props} />,
+          }}
+        />
+        <Tab.Screen
+          name="Calendar"
+          component={CalendarScreen}
           options={{
             tabBarButton: (props) => <TabBarButton data={props} />,
           }}

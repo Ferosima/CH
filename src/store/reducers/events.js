@@ -10,6 +10,7 @@ const initialState = {
   event: null,
   pending: false,
   error: null,
+  calendar: [],
 };
 
 export default function reducer(state = initialState, action) {

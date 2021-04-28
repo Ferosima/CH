@@ -67,7 +67,12 @@ export function* createUser(action) {
         ...action.payload,
         id: user.user.uid,
       });
-      yield put(userEntry({user: action.payload, id: user.user.uid}));
+      yield put(
+        userEntry({
+          user: {...action.payload, id: user.user.uid},
+          id: user.user.uid,
+        }),
+      );
     }
   } catch (error) {
     console.log('SIGN UP ERROR', error);
