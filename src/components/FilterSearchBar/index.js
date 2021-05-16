@@ -17,9 +17,9 @@ export class FilterSeachBar extends React.Component {
   state = {modalVisible: false};
 
   render() {
-    const {contentContainer} = this.props;
+    const {contentContainerStyle} = this.props;
     return (
-      <View style={[style.stickyHeaderWrapper, contentContainer]}>
+      <View style={[style.stickyHeaderWrapper, contentContainerStyle]}>
         <View style={style.row}>
           <Text style={style.stickyHeaderText}>Events</Text>
           <Icon

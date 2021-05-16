@@ -13,7 +13,7 @@ export function* fetchEvents() {
     const data = [];
     const snapshot = yield call(
       rsf.firestore.getCollection,
-      firestore().collection('Events'),
+      firestore().collection('Events').orderBy('time_begin', 'desc'),
     );
 
     snapshot.forEach((querySnapshot) => {

@@ -41,7 +41,6 @@ class MapScreen extends React.Component {
   }
 
   findCoordinates = () => {
-    console.log('find Call');
     Geolocation.getCurrentPosition(
       (position) => {
         this.setState({location: position.coords});
@@ -85,7 +84,7 @@ class MapScreen extends React.Component {
     this.setState({indexItem: null});
   };
 
-  renderItemEvent = (item, index) => (
+  renderItemEvent = ({item, index}) => (
     // <View style={style.itemListWrapper} key={index}>
     <View style={{width: 300, paddingHorizontal: 10}} key={index}>
       <EventItem
@@ -119,11 +118,15 @@ class MapScreen extends React.Component {
 
   render() {
     const {events} = this.props;
+    events.list = events.list.filter((event) => typeof event.map !== 'string');
     const {modalVisible, location} = this.state;
-    console.log('LOC', location);
     return (
       <>
-        <Modal animationType="fade" transparent visible={modalVisible}>
+        <Modal
+          animationType="fade"
+          transparent
+          visible={modalVisible}
+          onRequestClose={this.onPressBlur}>
           <ItemInfo
             data={this.props.events.list[this.state.indexItem]}
             onPressBlur={this.onPressBlur}
@@ -147,9 +150,15 @@ class MapScreen extends React.Component {
             />
           </View>
           <View style={{position: 'absolute', bottom: 10, zIndex: 1}}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {this.renderEventList()}
-            </ScrollView>
+            <FlatList
+              showsHorizontalScrollIndicator={false}
+              horizontal
+              refreshing={events.pending}
+              onRefresh={this.props.fetchEvents}
+              data={events.list}
+              renderItem={this.renderItemEvent}
+              keyExtractor={(item) => item.id}
+            />
           </View>
           <MapView
             style={{

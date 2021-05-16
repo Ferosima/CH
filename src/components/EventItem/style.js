@@ -8,8 +8,8 @@ export default style = StyleSheet.create({
     //   width: 0,
     //   height: 2,
     // },
-    // shadowOpacity: 0.23,
-    // shadowRadius: 2.62,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
     elevation: 1.5,
     backgroundColor: 'white',
     width: '100%',
@@ -38,6 +38,7 @@ export default style = StyleSheet.create({
     aspectRatio: 102 / 105,
   },
   image: {
+    // opacity: 0.6,
     width: '100%',
     height: '100%',
     borderRadius: 10,
@@ -89,5 +90,8 @@ export default style = StyleSheet.create({
     width: '100%',
     aspectRatio: 7 / 6,
     borderRadius: 50,
+  },
+  expairedText: {
+    color: '#6E7C8D',
   },
 });

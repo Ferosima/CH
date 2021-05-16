@@ -24,7 +24,7 @@ export default class MyCalendar extends React.Component {
     dates.forEach((element) => {
       markedDates[element] = {
         marked: true,
-        dotColor: '#486FFE',
+        dotColor: moment(element) > moment() ? '#486FFE' : 'grey',
         selected: element == selected,
       };
     });
@@ -39,7 +39,6 @@ export default class MyCalendar extends React.Component {
 
   render() {
     const {markedDates, selected, onPressBlur, onDayPress} = this.props;
-    console.log(this.markedDates(markedDates, selected));
     return (
       <TouchableOpacity
         style={{flex: 1}}

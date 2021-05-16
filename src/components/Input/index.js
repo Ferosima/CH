@@ -24,7 +24,14 @@ export default class CustomInput extends React.Component {
       }),
       backgroundColor: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: ['white', 'white'],
+        outputRange: [
+          this.props.labelBackgroundColor
+            ? this.props.labelBackgroundColor
+            : 'white',
+          this.props.labelBackgroundColor
+            ? this.props.labelBackgroundColor
+            : 'white',
+        ],
       }),
       zIndex: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
@@ -62,7 +69,6 @@ export default class CustomInput extends React.Component {
   );
 
   render() {
-    // console.log(this.state);
     const {
       label,
       onChangeText,
@@ -80,6 +86,7 @@ export default class CustomInput extends React.Component {
           {this.renderLabel(label, isRequired)}
         </Animated.View>
         <Input
+          // multiline
           inputContainerStyle={style.inputContainerStyle}
           containerStyle={style.containerStyle}
           onChangeText={onChangeText}

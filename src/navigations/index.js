@@ -3,11 +3,15 @@ import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {Icon} from 'react-native-elements';
-import Conferences from '../screens/ConferencesScreen';
+import ConferencesScreen from '../screens/ConferencesScreen';
 import {colors} from '../const/colors';
 import {navigation_icons} from '../const/icons';
 import MapScreen from '../screens/MapScreen';
 import CalendarScreen from '../screens/CalendarScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import CreateEventScreen from '../screens/CreateEventScreen';
+
+import ProfileNavigator from './profile';
 
 const Tab = createBottomTabNavigator();
 class TabBarButton extends React.Component {
@@ -18,21 +22,25 @@ class TabBarButton extends React.Component {
       onPress,
       children,
     } = this.props.data;
+    const {withoutLabel} = this.props;
     const label = accessibilityLabel.split(',')[0];
     const icon = navigation_icons[label]
       ? navigation_icons[label]
       : navigation_icons.Another;
+    // accessibilityState.selected
+    //   ? navigation_icons[`${label}_active`]
+    //   : navigation_icons[label];
     return (
       <TouchableOpacity
         onPress={onPress}
-        style={{flex: 1, justifyContent: 'center'}}>
+        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Icon
-          name={icon.name}
+          name={accessibilityState.selected ? icon.active_name : icon.name}
           type={icon.type}
           color={accessibilityState.selected ? colors.blueDark : colors.grey}
           size={icon.size}
         />
-        {children}
+        {withoutLabel ? null : children}
       </TouchableOpacity>
     );
   }
@@ -63,7 +71,7 @@ export default function MyTabs() {
         }}>
         <Tab.Screen
           name="Events"
-          component={Conferences}
+          component={ConferencesScreen}
           options={{
             tabBarButton: (props) => <TabBarButton data={props} />,
           }}
@@ -75,6 +83,13 @@ export default function MyTabs() {
             tabBarButton: (props) => <TabBarButton data={props} />,
           }}
         />
+        {/* <Tab.Screen
+          name="CreateEvent"
+          component={CreateEventScreen}
+          options={{
+            tabBarButton: (props) => <TabBarButton data={props} withoutLabel />,
+          }}
+        /> */}
         <Tab.Screen
           name="Calendar"
           component={CalendarScreen}
@@ -82,13 +97,13 @@ export default function MyTabs() {
             tabBarButton: (props) => <TabBarButton data={props} />,
           }}
         />
-        {/* <Tab.Screen
-          name="Menu"
-          component={Conferences}
+        <Tab.Screen
+          name="Profile"
+          component={ProfileNavigator}
           options={{
             tabBarButton: (props) => <TabBarButton data={props} />,
           }}
-        /> */}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );

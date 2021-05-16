@@ -31,7 +31,10 @@ export function* fetchCalendar() {
 
     const snapshot = yield call(
       rsf.firestore.getCollection,
-      firestore().collection('Calendar').where('id_user', '==', id_user),
+      firestore()
+        .collection('Calendar')
+        .where('id_user', '==', id_user)
+        .orderBy('time_begin', 'asc'),
     );
     snapshot.forEach((querySnapshot) => {
       data.push(Object.assign(querySnapshot.data(), {id: querySnapshot.id}));
@@ -59,16 +62,19 @@ export function* fetchIntersectingEvents({payload}) {
         .where('time_begin', '>=', dateToTimestamp(start_day))
         .where('time_begin', '<=', dateToTimestamp(end_day)),
     );
-    snapshot.forEach((querySnapshot) => {
+    yield snapshot.forEach((querySnapshot) => {
       data.push(Object.assign(querySnapshot.data(), {id: querySnapshot.id}));
     });
     // filter data for special event
     const intersectingEvents = yield data.filter(
       (event) =>
-        timestampToDate(event.time_begin) <= timestampToDate(time_begin) &&
-        timestampToDate(event.time_end) >=
-          timestampToDate(time_end).subtract('seconds', 1),
+        (timestampToDate(event.time_begin) <= timestampToDate(time_begin) &&
+          timestampToDate(event.time_end) > timestampToDate(time_begin)) ||
+        (timestampToDate(event.time_begin) < timestampToDate(time_end) &&
+          timestampToDate(event.time_end) >= timestampToDate(time_end)),
+      // timestampToDate(time_end).subtract(1, 'seconds'),
     );
+    console.log(intersectingEvents);
     yield put(fetchIntersectingEventsSuccess(intersectingEvents));
   } catch (error) {
     console.log('ERROR FETCH INTESRCTING EVENTS', error);

@@ -26,18 +26,19 @@ import {
 class CalendarScreen extends React.Component {
   state = {
     selectedDay: Date(),
+    month: moment().format('MMMM YYYY'),
     modalItemVisible: false,
     modalCalendarVisible: false,
     id_event: null, // change to id_event
     location: null,
-    time: moment().format('HH:MM A'),
+    time: moment().format('HH:mm'),
   };
 
   componentDidMount() {
     this.props.fetchEvents();
     this.props.fetchCalendar();
     this.timer = setInterval(() => {
-      this.setState({time: moment().format('HH:MM A')});
+      this.setState({time: moment().format('HH:mm')});
     }, 1000);
   }
 
@@ -82,7 +83,11 @@ class CalendarScreen extends React.Component {
     const {modalItemVisible, id_event} = this.state;
     const {events} = this.props;
     return (
-      <Modal animationType="fade" transparent visible={modalItemVisible}>
+      <Modal
+        animationType="fade"
+        transparent
+        visible={modalItemVisible}
+        onRequestClose={this.onPressBlur('modalItemVisible')}>
         <ItemInfo
           data={events.list.find((el) => id_event == el.id)}
           onPressBlur={this.onPressBlur('modalItemVisible')}
@@ -96,7 +101,6 @@ class CalendarScreen extends React.Component {
       moment(this.state.selectedDay).format('MMMM Do YYYY') ===
       moment(date).format('MMMM Do YYYY')
     ) {
-      // Fridays
       return {
         dateNameStyle: {color: '#486FFE'},
         dateNumberStyle: {
@@ -108,15 +112,28 @@ class CalendarScreen extends React.Component {
         dateContainerStyle: {alignSelf: 'center', justifyContent: 'center'},
       };
     }
+    if (
+      moment(date).format('MMMM Do YYYY') == moment().format('MMMM Do YYYY')
+    ) {
+      return {
+        dateNameStyle: {color: '#486FFE'},
+        dateNumberStyle: {
+          color: '#486FFE',
+        },
+        dateContainerStyle: {alignSelf: 'center', justifyContent: 'center'},
+      };
+    }
   };
 
   renderHeader = () => {
     const {selectedDay, time} = this.state;
+    const {list} = this.props.calendar;
     return (
       <View>
         <View style={[style.row, style.calendarWrapper]}>
           <TextIcon
-            text={moment(selectedDay).format('MMMM YYYY')}
+            text={this.state.month}
+            // text={moment(selectedDay).format('MMMM YYYY')}
             textStyle={style.calendarButtonText}
             iconName="calendar"
             iconType="feather"
@@ -139,6 +156,14 @@ class CalendarScreen extends React.Component {
         <CalendarStrip
           scrollable
           showMonth={false}
+          onWeekChanged={(start_week, end_week) => {
+            // console.log(start.format('MMMM'), end_week.format('MMMM'));
+            const start = start_week.format('MMMM');
+            const end = end_week.format('MMMM YYYY');
+            const month =
+              start != end_week.format('MMMM') ? `${start}/${end}` : end;
+            if (this.state.month != month) this.setState({month});
+          }}
           innerStyle={{flexGrow: 1, alignItems: 'flex-end'}}
           onDateSelected={(date) => {
             this.setState({selectedDay: date});
@@ -153,7 +178,14 @@ class CalendarScreen extends React.Component {
           iconContainer={{flex: 0.1}}
           markedDates={this.props.calendar.list.map((el) => ({
             date: dateToDay(el.time_begin),
-            dots: [{color: '#486FFE'}],
+            dots: [
+              {
+                color:
+                  moment(el.time_begin.toDate()) < moment()
+                    ? 'grey'
+                    : '#486FFE',
+              },
+            ],
           }))}
         />
       </View>
@@ -194,7 +226,7 @@ class CalendarScreen extends React.Component {
         {this.renderHeader()}
         <View style={style.contentContainer}>
           {data.length ? (
-            <ScrollView>{data.map(this.renderCalendarEvent)}</ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>{data.map(this.renderCalendarEvent)}</ScrollView>
           ) : (
             this.renderEmpty()
           )}

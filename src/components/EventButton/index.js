@@ -15,6 +15,8 @@ export class EventButton extends React.Component {
         }`;
       case 'danger':
         return 'Leave event';
+      case 'expaired':
+        return 'Event ended';
     }
   };
 
@@ -38,7 +40,7 @@ export class EventButton extends React.Component {
       <TouchableOpacity
         style={[style.button, style[`${state}Container`], buttonStyle]}
         onPress={!pending ? onPress[state] : null}
-        disabled={state === 'disabled'}>
+        disabled={state === 'disabled' || state === 'expaired'}>
         {pending ? (
           <ActivityIndicator size="small" color={'white'} />
         ) : (

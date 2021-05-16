@@ -20,7 +20,7 @@ export default style = StyleSheet.create({
     justifyContent: 'space-between',
   },
   calendarButton: {
-    backgroundColor: '#FAFBFB',
+    backgroundColor: '#F8F8FA',
     paddingVertical: 10,
     paddingHorizontal: 5,
     borderRadius: 20,

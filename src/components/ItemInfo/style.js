@@ -2,23 +2,13 @@ import {StyleSheet} from 'react-native';
 import {colors} from '../../const/colors';
 
 export default style = StyleSheet.create({
-  blurWrapper: {
-    flex: 1,
-    backgroundColor: '#C0C0C030',
-  },
   wrapper: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffffff00',
-  },
-  itemContainer: {
-    maxHeight: '90%',
-    width: '89%',
-    borderRadius: 30,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
   contentContainer: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
     padding: 20,
   },
   imageContainer: {
@@ -33,7 +23,8 @@ export default style = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     overflow: 'hidden',
-    // backgroundColor: 'grey',
+    justifyContent: 'flex-end',
+
   },
   row: {
     flexDirection: 'row',
@@ -59,7 +50,7 @@ export default style = StyleSheet.create({
   text: {
     fontFamily: 'Nunito-Regular',
     fontSize: 13,
-    color: colors.grey,
+    color: '#485E7D',
   },
   mapText: {
     flex: 1,
@@ -85,7 +76,7 @@ export default style = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   dateText: {
-    color: colors.grey,
+    color: '#485E7D',
     fontSize: 13,
     paddingHorizontal: 2,
     fontFamily: 'Comfortaa-Regular',
@@ -93,4 +84,5 @@ export default style = StyleSheet.create({
   marginBottom: {
     marginBottom: 25,
   },
+  hyperlinkStyle: {color: '#91C0F6'},
 });

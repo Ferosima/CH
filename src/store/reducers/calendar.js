@@ -85,7 +85,6 @@ export default function reducer(state = initialState, action) {
         intersectingEvents: [],
       };
     case CALENDAR_DELETE_EVENT_FROM_CALENDAR_SUCCESS:
-      console.log('ACTI', action.payload);
       return {
         ...state,
         pending: false,

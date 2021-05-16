@@ -16,13 +16,21 @@ export default style = StyleSheet.create({
     fontFamily: 'Nunito-Regular',
     color: 'white',
   },
-  successContainer: {backgroundColor: '#27B647'},
+  successContainer: {
+    backgroundColor: '#27B647',
+  },
   disabledContainer: {
     backgroundColor: 'rgba(255, 164, 25, 0.5)',
     paddingHorizontal: 8,
   },
-  dangerContainer: {backgroundColor: 'red'},
+  dangerContainer: {
+    backgroundColor: 'red',
+  },
+  expairedContainer: {
+    backgroundColor: '#E0E0E0',
+  },
   successTextStyle: {fontSize: 16},
   disabledTextStyle: {fontSize: 14},
   dangerTextStyle: {fontSize: 16},
+  expairedTextStyle: {fontSize: 14},
 });

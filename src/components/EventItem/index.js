@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {BlurView} from '@react-native-community/blur';
+import moment from 'moment';
 import defualt_image from '../../../assets/images/def_img.jpg';
 import style from './style';
 import {colors} from '../../const/colors';
@@ -20,7 +21,10 @@ export class EventItem extends React.Component {
 
   async componentDidMount() {
     try {
-      const mapAddress = await geocoder(this.props.data.map);
+      const mapAddress =
+        typeof this.props.data.map !== 'string'
+          ? await geocoder(this.props.data.map)
+          : 'Online';
       this.setState({mapAddress});
     } catch (err) {
       // handle errors
@@ -30,19 +34,27 @@ export class EventItem extends React.Component {
   render() {
     const {data, onPress, imageStyle} = this.props;
     const {label, time_begin, time_end, description, image} = data;
+    const isExpaired = moment(time_begin.toDate()) < moment();
     return (
       <>
         <TouchableOpacity style={[style.wrapper]} onPress={onPress}>
           <View style={[style.imageWrapper, imageStyle]}>
             <Image
+              defaultSource={require('../../../assets/images/default_event.png')}
               resizeMode={'cover'}
-              style={style.image}
-              source={defualt_image}
+              style={[style.image, isExpaired ? {opacity: 0.6} : null]}
+              source={{
+                uri:
+                  image ||
+                  'https://firebasestorage.googleapis.com/v0/b/conferencehelper-c9106.appspot.com/o/event%2Fdefault_event.png?alt=media&token=5a2d154a-ca38-4cdc-8f42-d45691a7342c',
+              }}
             />
           </View>
           <View style={style.textWrapper}>
             <View style={style.flex}>
-              <Text style={style.title} numberOfLines={1}>
+              <Text
+                style={[style.title, isExpaired ? style.expairedText : null]}
+                numberOfLines={1}>
                 {label}
               </Text>
               <View style={style.row}>
@@ -72,10 +84,15 @@ export class EventItem extends React.Component {
                 <Icon
                   name="clock"
                   type="feather"
-                  color={colors.green}
+                  color={isExpaired ? 'grey' : colors.green}
                   size={16}
                 />
-                <Text style={[style.subtitle, style.time]}>
+                <Text
+                  style={[
+                    style.subtitle,
+                    style.time,
+                    isExpaired ? style.expairedText : null,
+                  ]}>
                   {`${dateToTime(time_begin)}-${dateToTime(time_end)}`}
                 </Text>
               </View>

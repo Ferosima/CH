@@ -19,7 +19,17 @@ import DatePicker from '../DatePicker';
 
 class RegistrationForm extends React.Component {
   state = {
+    mock_registration: [],
     form: {},
+  };
+
+  componentDidMount = () => {
+    if (this.props.data) this.setState({form: this.props.data});
+    this.setState({
+      mock_registration: this.props.withoutPassword
+        ? mock_registration.filter((el) => el.name != 'password')
+        : mock_registration,
+    });
   };
 
   _cleanForm = () => {
@@ -47,6 +57,7 @@ class RegistrationForm extends React.Component {
   renderInput = (item) => (
     <CustomInput
       label={item.label}
+      labelBackgroundColor={this.props.labelBackgroundColor}
       keyboardType={item.keyboard}
       isRequired={item.required}
       value={this.state.form ? this.state.form[item.name] : null}
@@ -61,6 +72,7 @@ class RegistrationForm extends React.Component {
   renderBirthDate = (item) => (
     <DatePicker
       label={item.label}
+      labelBackgroundColor={this.props.labelBackgroundColor}
       onChange={this._setForm(item.name)}
       isRequired={item.required}
       error={this._findError(item.name)}
@@ -82,24 +94,31 @@ class RegistrationForm extends React.Component {
   );
 
   render() {
+    const {withoutButtons = false} = this.props;
     return (
       <View style={style.wrapper}>
-        <Button
-          onPress={this._goBack}
-          text={'Go back'}
-          buttonStyle={style.buttonBack}
-        />
-        {mock_registration.map(this.renderForm)}
+        {withoutButtons ? null : (
+          <Button
+            onPress={this._goBack}
+            text={'Go back'}
+            buttonStyle={style.buttonBack}
+          />
+        )}
+        {this.state.mock_registration.map(this.renderForm)}
         <Text style={style.errorStyle}>{this._findError('form_error')}</Text>
         <View style={style.buttonsWrapper}>
-          <Button onPress={this._cleanForm} text={'Clear'} />
-          <Button
-            onPress={this._createUser}
-            text={'Done'}
-            pending={this.props.auth.pending}
-            buttonStyle={style.buttonDark}
-            textStyle={style.buttonDarkText}
-          />
+          {withoutButtons ? null : (
+            <>
+              <Button onPress={this._cleanForm} text={'Clear'} />
+              <Button
+                onPress={this._createUser}
+                text={'Done'}
+                pending={this.props.auth.pending}
+                buttonStyle={style.buttonDark}
+                textStyle={style.buttonDarkText}
+              />
+            </>
+          )}
         </View>
       </View>
     );

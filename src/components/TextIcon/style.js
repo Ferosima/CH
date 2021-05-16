@@ -4,7 +4,6 @@ import {colors} from '../../const/colors';
 export default style = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'baseline',
     flexWrap: 'wrap',
     alignSelf: 'flex-start',
