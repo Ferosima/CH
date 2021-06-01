@@ -4,13 +4,16 @@ import {colors} from '../../const/colors';
 export default style = StyleSheet.create({
   wrapper: {
     flexGrow: 1,
-    backgroundColor: colors.main,
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'space-around',
   },
   title: {
-    fontSize: 40,
+    fontFamily: 'Nunito-Bold',
+    // fontWeight: 'bold',
+    fontSize: 45,
     justifyContent: 'flex-start',
+    color: colors.dark,
   },
   buttonsWrapper: {
     flexDirection: 'row',

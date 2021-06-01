@@ -31,6 +31,7 @@ export default style = StyleSheet.create({
     alignSelf: 'flex-end',
     padding: 2,
     paddingHorizontal: 10,
+    marginBottom: 10,
   },
   modalWrapper: {
     flex: 1,

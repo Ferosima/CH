@@ -3,6 +3,7 @@ import '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import ReduxSagaFirebase from 'redux-saga-firebase';
 import {call, put} from 'redux-saga/effects';
+import moment from 'moment';
 import {mock_registration, mock_login} from '../../const/mockForm';
 import {
   createUserFailed,
@@ -10,7 +11,7 @@ import {
   fetchLoginFailed,
   fetchLoginSuccess,
 } from '../actions/auth';
-import {userEntry} from '../actions/user';
+import {fetchUser, userEntry} from '../actions/user';
 
 const firebaseApp = firebase.apps[0];
 const rsf = new ReduxSagaFirebase(firebaseApp);
@@ -27,14 +28,15 @@ export function* fetchLogin(action) {
         action.payload.password,
       );
       yield put(fetchLoginSuccess());
-      const snapshot = yield call(
-        rsf.firestore.getCollection,
-        firestore()
-          .collection('Users')
-          .where('id', '==', user.user.uid)
-          .limit(1),
-      );
-      yield put(userEntry({user: snapshot.docs[0].data(), id: user.id}));
+      yield put(fetchUser(user.user.uid));
+      // const snapshot = yield call(
+      //   rsf.firestore.getCollection,
+      //   firestore()
+      //     .collection('Users')
+      //     .where('id', '==', user.user.uid)
+      //     .limit(1),
+      // );
+      // yield put(userEntry({user: snapshot.docs[0].data(), id: user.user.uid}));
     }
   } catch (error) {
     if (error.code.includes('email'))
@@ -61,13 +63,26 @@ export function* createUser(action) {
         action.payload.email,
         action.payload.password,
       );
-      yield put(createUserSuccess());
+
       delete action.payload.password;
+      const birth_date = moment(action.payload.birth_date).set({
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
       yield call(rsf.firestore.addDocument, 'Users', {
         ...action.payload,
+        birth_date,
         id: user.user.uid,
       });
-      yield put(userEntry({user: action.payload, id: user.user.uid}));
+      yield put(createUserSuccess());
+      yield put(
+        userEntry({
+          user: {...action.payload, id: user.user.uid},
+          id: user.user.uid,
+        }),
+      );
     }
   } catch (error) {
     console.log('SIGN UP ERROR', error);

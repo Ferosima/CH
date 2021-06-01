@@ -6,33 +6,38 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import DatePicker from 'react-native-date-picker';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import moment from 'moment';
 import {mock_registration} from '../../const/mockForm';
 import {createUser, authClear} from '../../store/actions/auth';
 import {getRootState} from '../../store/selectors/auth';
 import Button from '../Button';
 import CustomInput from '../Input';
 import style from './style';
+import DatePicker from '../DatePicker';
 
 class RegistrationForm extends React.Component {
   state = {
+    mock_registration: [],
     form: {},
-    date: new Date(),
-    modalVisible: false,
+  };
+
+  componentDidMount = () => {
+    if (this.props.data) this.setState({form: this.props.data});
+    this.setState({
+      mock_registration: this.props.withoutPassword
+        ? mock_registration.filter((el) => el.name != 'password')
+        : mock_registration,
+    });
   };
 
   _cleanForm = () => {
-    this.setState({form: {}, date: new Date()});
+    this.setState({form: {}});
   };
 
   _setForm = (name) => (value) => {
     this.setState({form: {...this.state.form, [name]: value}});
-  };
-
-  _modalVisible = (value) => () => {
-    this.setState({modalVisible: value});
   };
 
   _createUser = () => {
@@ -49,40 +54,10 @@ class RegistrationForm extends React.Component {
     this.props.authClear();
   };
 
-  renderModal = () => (
-    <Modal animationType="fade" transparent visible={this.state.modalVisible}>
-      <TouchableOpacity
-        style={style.modalWrapper}
-        onPress={this._modalVisible(false)}>
-        <TouchableWithoutFeedback>
-          <View style={style.modal}>
-            <DatePicker
-              date={this.state.date}
-              onDateChange={this._setForm('birth_date')}
-              mode="date"
-            />
-            <View style={style.buttonsWrapper}>
-              <Button
-                onPress={this._modalVisible(false)}
-                text={'Go back'}
-                buttonStyle={style.buttonBack}
-              />
-              <Button
-                onPress={this._modalVisible(false)}
-                text={'Done'}
-                buttonStyle={[style.buttonDark, style.buttonBack]}
-                textStyle={style.buttonDarkText}
-              />
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </TouchableOpacity>
-    </Modal>
-  );
-
   renderInput = (item) => (
     <CustomInput
       label={item.label}
+      labelBackgroundColor={this.props.labelBackgroundColor}
       keyboardType={item.keyboard}
       isRequired={item.required}
       value={this.state.form ? this.state.form[item.name] : null}
@@ -93,43 +68,22 @@ class RegistrationForm extends React.Component {
     />
   );
 
-  renderLabel = (label, isRequired) => (
-    <Text>
-      <Text style={style.label}>{label}</Text>
-      {isRequired ? <Text style={style.required}>*</Text> : null}
-    </Text>
+  // TODO add maximumDate
+  renderBirthDate = (item) => (
+    <DatePicker
+      label={item.label}
+      labelBackgroundColor={this.props.labelBackgroundColor}
+      onChange={this._setForm(item.name)}
+      isRequired={item.required}
+      error={this._findError(item.name)}
+      maximumDate={new Date()}
+      value={
+        this.state.form[item.name]
+          ? moment(this.state.form[item.name]).format('DD MMMM YYYY')
+          : null
+      }
+    />
   );
-
-  renderDate = (label, text) => (
-    <TouchableOpacity
-      style={style.dateStyle}
-      onPress={this._modalVisible(true)}>
-      <Text style={style.dateLabel}>{label}</Text>
-      <View>
-        <Text style={style.dateText}>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-  renderBirthDate = (item) => {
-    const date = {day: ' ', month: ' ', year: ' '};
-    if (this.state.form.birth_date) {
-      date.day = this.state.form.birth_date.getDate();
-      date.month = this.state.form.birth_date.getMonth() + 1;
-      date.year = this.state.form.birth_date.getFullYear();
-    }
-    return (
-      <View style={style.birthDayContainer}>
-        {this.renderLabel(item.label, item.required)}
-        <View style={style.birthDayWrapper}>
-          {this.renderDate('Day', date.day)}
-          {this.renderDate('Mouth', date.month)}
-          {this.renderDate('Year', date.year)}
-        </View>
-        <Text style={style.errorStyle}>{this._findError(item.name)}</Text>
-      </View>
-    );
-  };
 
   renderForm = (item, index) => (
     <React.Fragment key={index}>
@@ -140,25 +94,31 @@ class RegistrationForm extends React.Component {
   );
 
   render() {
+    const {withoutButtons = false} = this.props;
     return (
       <View style={style.wrapper}>
-        {this.renderModal()}
-        <Button
-          onPress={this._goBack}
-          text={'Go back'}
-          buttonStyle={style.buttonBack}
-        />
-        {mock_registration.map(this.renderForm)}
+        {withoutButtons ? null : (
+          <Button
+            onPress={this._goBack}
+            text={'Go back'}
+            buttonStyle={style.buttonBack}
+          />
+        )}
+        {this.state.mock_registration.map(this.renderForm)}
         <Text style={style.errorStyle}>{this._findError('form_error')}</Text>
         <View style={style.buttonsWrapper}>
-          <Button onPress={this._cleanForm} text={'Clear'} />
-          <Button
-            onPress={this._createUser}
-            text={'Done'}
-            pending={this.props.auth.pending}
-            buttonStyle={style.buttonDark}
-            textStyle={style.buttonDarkText}
-          />
+          {withoutButtons ? null : (
+            <>
+              <Button onPress={this._cleanForm} text={'Clear'} />
+              <Button
+                onPress={this._createUser}
+                text={'Done'}
+                pending={this.props.auth.pending}
+                buttonStyle={style.buttonDark}
+                textStyle={style.buttonDarkText}
+              />
+            </>
+          )}
         </View>
       </View>
     );
